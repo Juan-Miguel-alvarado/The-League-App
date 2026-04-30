@@ -31,38 +31,6 @@
   | Charts | Chart.js 4 |
   | Data | football-data.org API v4 |
 
-  ## Project Structure
-
-  src/
-  ├── api/
-  │   └── football.js          # fetch, transform, cache
-  ├── components/
-  │   ├── ui/                  # shadcn/ui (Button, Card, Badge, Input…)
-  │   ├── layout/
-  │   │   ├── Sidebar.jsx
-  │   │   └── Topbar.jsx       # search + theme toggle
-  │   ├── charts/
-  │   │   └── ChartCard.jsx
-  │   └── shared/
-  │       ├── StatCard.jsx
-  │       ├── TeamBadge.jsx
-  │       ├── FormDots.jsx
-  │       └── SectionHeader.jsx
-  ├── hooks/
-  │   └── useTheme.js          # dark/light toggle
-  ├── pages/
-  │   ├── Dashboard.jsx
-  │   ├── Standings.jsx
-  │   ├── Teams.jsx
-  │   ├── Scorers.jsx
-  │   ├── Statistics.jsx
-  │   ├── TeamDetail.jsx
-  │   └── PlayerDetail.jsx
-  ├── lib/
-  │   └── utils.js             # cn() helper
-  ├── App.jsx                  # router + global state
-  └── main.jsx
-
   ## Getting Started
 
   ### 1. Get a free API key
