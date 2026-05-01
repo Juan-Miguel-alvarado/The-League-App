@@ -1,83 +1,87 @@
 # LaLiga Dashboard 2025/26
 
-  A live LaLiga stats dashboard built with React, Vite, and shadcn/ui. Pulls real data from the [football-data.org](https://www.football-data.org) API.
+A live LaLiga stats dashboard built with React and Vite. Pulls real data from the [football-data.org](https://www.football-data.org) API.
 
-  ![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
-  ![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
-  ![TailwindCSS](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss&logoColor=white)
-  ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-black?logo=shadcnui&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-deployed-00C7B7?logo=netlify&logoColor=white)
 
-  ## Features
+## Live Demo
 
-  - **Dashboard** — key stats, standings preview, top scorers, recent results, and 3 charts
-  - **Standings** — full table with UCL / relegation zone indicators
-  - **Teams** — card grid with crest, form dots, and click-through to team detail
-  - **Top Scorers** — table + horizontal bar chart with goals & assists
-  - **Statistics** — attack vs defense, goals per team, points-per-game charts
-  - **Team Detail** — radar chart, form strip, and squad scorers
-  - **Player Detail** — radar vs field average, contribution donut chart
-  - **Search** — instant fuzzy search for teams and players
-  - **Dark / Light mode** — toggle in the topbar, persisted in localStorage
+[thlg.netlify.app](https://thlg.netlify.app)
 
-  ## Tech Stack
+## Features
 
-  | Layer | Library |
-  |-------|---------|
-  | Framework | React 18 |
-  | Build tool | Vite 5 |
-  | Styling | Tailwind CSS 3 |
-  | Components | shadcn/ui |
-  | Icons | Lucide React |
-  | Charts | Chart.js 4 |
-  | Data | football-data.org API v4 |
+- **Dashboard** — key stats, standings preview, top scorers, recent results, and 3 charts
+- **Standings** — full table with UCL / relegation zone indicators
+- **Teams** — card grid with crest, form dots, and click-through to team detail
+- **Top Scorers** — table + horizontal bar chart with goals & assists
+- **Statistics** — attack vs defense, goals per team, points-per-game charts
+- **Team Detail** — radar chart, form strip, and squad scorers
+- **Player Detail** — radar vs field average, contribution donut chart
+- **Search** — instant fuzzy search for teams and players
+- **Dark / Light mode** — toggle in the topbar, persisted in localStorage
 
-  ## Getting Started
+## Tech Stack
 
-  ### 1. Get a free API key
+| Layer | Library |
+|-------|---------|
+| Framework | React 18 |
+| Build tool | Vite 5 |
+| Styling | Tailwind CSS 3 |
+| Icons | Lucide React |
+| Charts | Chart.js 4 |
+| Data | football-data.org API v4 |
+| Deployment | Netlify (with serverless functions) |
 
-  Register at [football-data.org](https://www.football-data.org/client/register) and copy your token.
+## Getting Started
 
-  ### 2. Add your API key
+### 1. Get a free API key
 
-  Open `server.cjs` and replace the value:
+Register at [football-data.org](https://www.football-data.org/client/register) and copy your token.
 
-  ```js
-  const API_KEY = 'YOUR_API_KEY_HERE';
+### 2. Add your token
 
-  3. Install dependencies
+Replace the token in two files:
 
-  npm install
+**`vite.config.js`** (used in local dev via Vite proxy):
+```js
+proxyReq.setHeader('X-Auth-Token', 'YOUR_TOKEN_HERE')
+```
 
-  4. Run the app
+**`netlify/functions/api.js`** (used in production via Netlify function):
+```js
+const API_KEY = 'YOUR_TOKEN_HERE'
+```
 
-  Open two terminals in the project folder:
+### 3. Install and run
 
-  # Terminal 1 — API proxy server
-  npm run server
+```bash
+npm install
+npm run dev
+```
 
-  # Terminal 2 — React dev server
-  npm run dev
+Open [http://localhost:5173](http://localhost:5173). No extra server needed.
 
-  Then open http://localhost:5173.
+## Available Scripts
 
-  ▎ The proxy server is required because football-data.org blocks direct browser requests. If port 3000 is already in use, run kill $(lsof -t -i:3000) first.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build locally |
 
-  Available Scripts
+## Architecture
 
-  ┌─────────────────┬──────────────────────────────┐
-  │     Command     │         Description          │
-  ├─────────────────┼──────────────────────────────┤
-  │ npm run dev     │ Start Vite dev server        │
-  ├─────────────────┼──────────────────────────────┤
-  │ npm run build   │ Production build             │
-  ├─────────────────┼──────────────────────────────┤
-  │ npm run preview │ Preview production build     │
-  ├─────────────────┼──────────────────────────────┤
-  │ npm run server  │ Start API proxy on port 3000 │
-  └─────────────────┴──────────────────────────────┘
+```
+Browser → /api/*
+  └── Local dev:   Vite proxy → football-data.org (token injected server-side)
+  └── Production:  Netlify redirect → Netlify Function → football-data.org
+```
 
-  API & Rate Limiting
+The API token is never exposed to the browser. In local dev the Vite proxy injects it; in production a Netlify serverless function handles the request.
 
-  The free tier of football-data.org allows 10 requests per minute. The proxy queues requests with an 800 ms delay between them and caches responses in memory to avoid hitting the limit
-  on repeat navigation.
-  ```
+## Rate Limiting
+
+The free tier of football-data.org allows 10 requests per minute. The app queues requests with an 800 ms delay between them and caches responses in memory to avoid hitting the limit on repeat navigation.
