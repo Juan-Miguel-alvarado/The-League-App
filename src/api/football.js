@@ -1,5 +1,4 @@
-const BASE = 'https://api.football-data.org/v4'
-const API_KEY = '0d9c408b126f46a685e9127195a29d7e'
+const BASE = '/api'
 const LEAGUE = 'PD'
 const _cache = {}
 const REQUEST_DELAY = 800
@@ -31,7 +30,7 @@ async function processQueue() {
 
 async function apiFetch(path) {
   if (_cache[path]) return _cache[path]
-  const res = await fetch(`${BASE}${path}`, { headers: { 'X-Auth-Token': API_KEY } })
+  const res = await fetch(`${BASE}${path}`)
   if (res.status === 429) {
     await delay(3000)
     return apiFetch(path)

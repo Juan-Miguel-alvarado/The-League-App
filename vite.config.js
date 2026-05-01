@@ -15,8 +15,14 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'https://api.football-data.org/v4',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.setHeader('X-Auth-Token', '0d9c408b126f46a685e9127195a29d7e')
+          })
+        },
       },
     },
   },
