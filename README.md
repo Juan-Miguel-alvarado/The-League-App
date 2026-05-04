@@ -7,6 +7,9 @@ A live LaLiga stats dashboard built with React and Vite. Pulls real data from th
 ![TailwindCSS](https://img.shields.io/badge/Tailwind-3-06B6D4?logo=tailwindcss&logoColor=white)
 ![Netlify](https://img.shields.io/badge/Netlify-deployed-00C7B7?logo=netlify&logoColor=white)
 
+<img width="1366" height="768" alt="League" src="https://github.com/user-attachments/assets/dd6227de-7320-4725-80b1-beb19e4b915e" />
+
+
 ## Live Demo
 
 [thlg.netlify.app](https://thlg.netlify.app)
